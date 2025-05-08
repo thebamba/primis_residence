@@ -1,7 +1,7 @@
 import Link from "next/link";
 import "./globals.css";
 import { Facebook, Instagram, Twitter, Home } from "lucide-react";
-
+import MobileMenu from "./components/MobileMenu";
 
 
 export const metadata = {
@@ -15,18 +15,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex flex-col min-h-screen font-sans bg-zinc-50 text-zinc-900">
         {/* Header/nav */}
         <header className="bg-white shadow-sm sticky top-0 z-50">
-          <nav className="max-w-4xl mx-auto flex items-center justify-between h-16 px-4">
-            <Link href="/"  className="text-lg font-bold tracking-wide text-rose-600">
+          <nav className="max-w-4xl mx-auto flex items-center justify-between h-16 px-4 relative">
+            <Link href="/" className="text-lg font-bold tracking-wide text-rose-600">
               Résidence Primis
             </Link>
-            <div className="space-x-4">
+            {/* Desktop nav */}
+            <div className="space-x-4 hidden md:flex">
               <Link href="/" className="hover:text-rose-600 transition">Accueil</Link>
               <Link href="/a-propos" className="hover:text-rose-600 transition">À propos</Link>
               <Link href="/reserver" className="hover:text-rose-600 transition">Réservation et Contact</Link>
               <Link href="/unites" className="hover:text-rose-600 transition">Nos studios et appartements</Link>
               <Link href="/avis" className="hover:text-rose-600 transition">Avis</Link>
-
             </div>
+            {/* Mobile burger */}
+            <MobileMenu />
           </nav>
         </header>
         {/* Main content */}
