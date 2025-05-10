@@ -22,9 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* Desktop nav */}
             <div className="space-x-4 hidden md:flex">
               <Link href="/" className="hover:text-rose-600 transition">Accueil</Link>
-              <Link href="/a-propos" className="hover:text-rose-600 transition">À propos</Link>
-              <Link href="/reserver" className="hover:text-rose-600 transition">Réservation et Contact</Link>
               <Link href="/unites" className="hover:text-rose-600 transition">Nos studios et appartements</Link>
+              <Link href="/a-propos" className="hover:text-rose-600 transition">À propos</Link>
+              <Link href="/contact" className="hover:text-rose-600 transition"> Nous contacter</Link>
               <Link href="/avis" className="hover:text-rose-600 transition">Avis</Link>
             </div>
             {/* Mobile burger */}

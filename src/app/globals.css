@@ -67,3 +67,16 @@
     @apply bg-background text-foreground;
   }
 }
+@layer utilities {
+  .animate-zoom {
+    animation: zoomin 4s linear forwards;
+  }
+  @keyframes zoomin {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.12);
+    }
+  }
+}
