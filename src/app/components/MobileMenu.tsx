@@ -1,4 +1,3 @@
-// src/app/components/MobileMenu.tsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -6,9 +5,9 @@ import { Menu, X } from "lucide-react";
 
 const menuItems = [
     { href: "/", label: "Accueil" },
-    { href: "/a-propos", label: "À propos" },
-    { href: "/reserver", label: "Réservation et contact" },
     { href: "/unites", label: "Nos studios et appartements" },
+    { href: "/a-propos", label: "À propos" },
+    { href: "/contact", label: "Nous contacter" },
     { href: "/avis", label: "Avis" },
 ];
 
