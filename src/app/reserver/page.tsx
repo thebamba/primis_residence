@@ -1,103 +1,140 @@
 "use client";
 import { useRef, useState } from "react";
-import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+import { useSearchParams } from "next/navigation";
 import emailjs from "@emailjs/browser";
-import { ArrowRight } from "lucide-react";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!;
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
 
-const airbnbUrl = "https://airbnb.com";
-const bookingUrl = "https://booking.com";
-
 export default function Reserver() {
-    const form = useRef<HTMLFormElement>(null);
-    const [range, setRange] = useState([{ startDate: new Date(), endDate: new Date(), key: "selection" }]);
-    const [statut, setStatut] = useState<string | null>(null);
+    const search = useSearchParams();
+    const unitType = search.get("type") || "";
+    const from = search.get("from") || "";
+    const to = search.get("to") || "";
+    const total = search.get("total") || "";
 
-    const envoyerReservation = (e: React.FormEvent) => {
+    const form = useRef<HTMLFormElement>(null);
+    const [statut, setStatut] = useState<{ type: "success" | "error"; message: string } | null>(null);
+    const [emailConfirm, setEmailConfirm] = useState<string>("");
+
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!form.current) return;
+
+        const formData = new FormData(form.current);
+        const email = formData.get("user_email")?.toString() || "";
+
+        if (email !== emailConfirm) {
+            setStatut({ type: "error", message: "Les deux adresses e-mail ne correspondent pas." });
+            return;
+        }
+
         setStatut(null);
+
         emailjs
             .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form.current, EMAILJS_PUBLIC_KEY)
             .then(() => {
-                setStatut("Message envoyé ! Nous vous contacterons rapidement.");
+                setStatut({ type: "success", message: "Demande envoyée avec succès ! Vous recevrez un email sous peu." });
                 form.current?.reset();
+                setEmailConfirm("");
             })
             .catch(() => {
-                setStatut("Erreur lors de l'envoi. Veuillez réessayer.");
+                setStatut({ type: "error", message: "Erreur lors de l'envoi. Veuillez réessayer." });
             });
     };
 
     return (
         <section className="max-w-lg mx-auto space-y-8">
-            <h1 className="text-3xl font-bold text-rose-700">Réserver votre séjour</h1>
+            <h1 className="text-3xl font-bold text-rose-700">Confirmez votre réservation</h1>
 
-            {/* Calendrier */}
-            <div className="bg-white rounded shadow p-4">
-                <h2 className="text-lg font-semibold mb-2">Sélectionnez vos dates</h2>
-                <DateRange
-                    editableDateInputs
-                    onChange={item => {
-                        const startDate = item.selection.startDate || new Date();
-                        const endDate = item.selection.endDate || new Date();
-                        setRange([{ startDate, endDate, key: "selection" }]);
-                    }}
-                    moveRangeOnFirstSelection={false}
-                    ranges={range}
-                    rangeColors={["#f43f5e"]}
-                    minDate={new Date()}
+            <div className="bg-zinc-50 p-3 rounded space-y-2">
+                {/*<input type="hidden" name="unit_type" value={unitType} />*/}
+                {/*<input type="hidden" name="dates" value={`${from} - ${to}`} />*/}
+                {/*<input type="hidden" name="total_price" value={total} />*/}
+
+                <div>
+                    <label className="font-medium">Type d'unité</label>
+                    <input value={unitType} readOnly className="w-full border rounded px-3 py-2 mt-1" />
+                </div>
+                <div>
+                    <label className="font-medium">Dates</label>
+                    <input
+                        value={from && to ? `${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}` : ""}
+                        readOnly
+                        className="w-full border rounded px-3 py-2 mt-1"
+                    />
+                </div>
+                <div>
+                    <label className="font-medium">Total à payer</label>
+                    <input value={total ? `${parseInt(total).toLocaleString()} FCFA` : ""} readOnly className="w-full border rounded px-3 py-2 mt-1" />
+                </div>
+            </div><input
+            type="hidden"
+            name="dates"
+            value={`${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}`}
+        />
+
+
+            <form ref={form} onSubmit={handleSubmit} className="space-y-4 bg-white rounded shadow p-4">
+                {/* ✅ Hidden fields moved inside the form */}
+                <input type="hidden" name="unit_type" value={unitType} />
+                <input
+                    type="hidden"
+                    name="dates"
+                    value={`${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}`}
                 />
-            </div>
-
-            {/* Formulaire */}
-            <form ref={form} onSubmit={envoyerReservation} className="space-y-4 bg-white rounded shadow p-4">
-                <input type="hidden" name="dates" value={`${range[0].startDate?.toLocaleDateString()} - ${range[0].endDate?.toLocaleDateString()}`} />
-
+                <input type="hidden" name="total_price" value={`${parseInt(total).toLocaleString()} FCFA`} />
                 <div>
-                    <label className="block font-medium mb-1" htmlFor="nom">Nom complet</label>
-                    <input id="nom" name="user_name" type="text" required className="w-full border rounded px-3 py-2" />
+                    <label className="block font-medium mb-1">Nom complet</label>
+                    <input name="user_name" type="text" required className="w-full border rounded px-3 py-2" />
                 </div>
                 <div>
-                    <label className="block font-medium mb-1" htmlFor="email">Email</label>
-                    <input id="email" name="user_email" type="email" required className="w-full border rounded px-3 py-2" />
+                    <label className="block font-medium mb-1">Adresse e-mail</label>
+                    <div className="flex items-start bg-yellow-100 border-l-4 border-yellow-600 p-4 rounded-md shadow-sm mb-3">
+                        <div className="text-xl mr-3">⚠️</div>
+                        <div>
+                            <p className="font-semibold text-yellow-800">
+                                Adresse e-mail importante
+                            </p>
+                            <p className="text-sm text-yellow-800">
+                                C’est à cette adresse que vous recevrez le lien de paiement et la confirmation de réservation.
+                                <br />Veuillez vous assurer qu’elle est correcte avant de continuer.
+                            </p>
+                        </div>
+                    </div>
+                    <input
+                        name="user_email"
+                        type="email"
+                        required
+                        className="w-full border rounded px-3 py-2"
+                        placeholder="ex: vous@email.com"
+                    />
                 </div>
                 <div>
-                    <label className="block font-medium mb-1" htmlFor="message">Message</label>
-                    <textarea id="message" name="message" rows={3} className="w-full border rounded px-3 py-2" />
+                    <label className="block font-medium mb-1">Confirmez votre adresse e-mail</label>
+                    <input
+                        type="email"
+                        required
+                        value={emailConfirm}
+                        onChange={(e) => setEmailConfirm(e.target.value)}
+                        className="w-full border rounded px-3 py-2"
+                    />
                 </div>
-
+                <div>
+                    <label className="block font-medium mb-1">Précisions sur la réservation (optionnel)</label>
+                    <textarea name="message" rows={3} placeholder="Ex : Heure d'arrivée prévue, demandes spéciales…" className="w-full border rounded px-3 py-2" />
+                </div>
                 <button type="submit" className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2 rounded font-semibold w-full">
-                    Demander la réservation
+                    Soumettre la réservation
                 </button>
-                {statut && <p className="text-green-700 mt-3">{statut}</p>}
+
+                {statut && (
+                    <p className={`mt-3 ${statut.type === "success" ? "text-green-700" : "text-red-700"}`}>
+                        {statut.message}
+                    </p>
+                )}
             </form>
-            {/* Paiement à venir */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded shadow p-4 text-center text-yellow-900">
-                <p className="font-semibold mb-2">Le paiement en ligne arrive bientôt&nbsp;!</p>
-                <p className="text-sm">Nous travaillons fort pour vous offrir très prochainement toutes les méthodes de paiement&nbsp;: carte bancaire, Orange Money, Wave, PayPal, et plus encore.</p>
-                <button disabled className="w-full bg-gray-300 text-gray-500 cursor-not-allowed rounded py-2 mt-3 font-semibold">
-                    Paiement en ligne (bientôt disponible)
-                </button>
-            </div>
-            {/* Partenaires */}
-            <div className="bg-zinc-50 rounded shadow p-4 text-center space-y-2">
-                <p className="font-medium text-zinc-700">Ou réservez directement via nos partenaires&nbsp;:</p>
-                <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
-                    <a href={airbnbUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#FF5A5F] text-white font-semibold px-5 py-3 rounded-lg shadow hover:bg-[#ff868a] transition-all text-lg w-full sm:w-auto">
-                        Airbnb <ArrowRight size={18} />
-                    </a>
-                    <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#003580] text-white font-semibold px-5 py-3 rounded-lg shadow hover:bg-[#3867b4] transition-all text-lg w-full sm:w-auto">
-                        Booking.com <ArrowRight size={18} />
-                    </a>
-                </div>
-            </div>
-
-
         </section>
     );
 }
