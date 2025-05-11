@@ -1,6 +1,5 @@
 import HeroCarousel from "./components/HeroCarousel";
 
-
 export default function Home() {
   return (
       <section className="space-y-10">
@@ -23,7 +22,25 @@ export default function Home() {
               <span className="text-3xl">🛎️</span>
               <span className="font-medium mt-2">Accueil personnalisé 24h/24</span>
             </li>
+            <li className="bg-white shadow p-4 rounded flex flex-col items-center">
+              <span className="text-3xl">🚗</span>
+              <span className="font-medium mt-2">Location de voiture ($)</span>
+            </li>
+            <li className="bg-white shadow p-4 rounded flex flex-col items-center">
+              <span className="text-3xl">🚌</span>
+              <span className="font-medium mt-2">Navette aéroport ($)</span>
+            </li>
           </ul>
+
+          {/* Bouton vers la page des unités */}
+          <div className="flex justify-center mt-6">
+            <a
+                href="/contact"
+                className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2 rounded font-semibold shadow transition"
+            >
+              Nous contacter pour en savoir plus sur ces services
+            </a>
+          </div>
         </section>
 
         {/* Localisation */}

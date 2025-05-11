@@ -1,17 +1,34 @@
+"use client";
+
 const avis = [
   {
-    nom: "Fatou S.",
-    texte: "Superbe séjour, résidence très propre et calme. Merci à l’hôte !",
+    nom: "Mattia",
+    paysCode: "it",
+
+    titre: "Excellent stay",
+    texte: "The place was exactly where state in the reservation, clean and comfortable, staff was available and kind. Will definitely go back.",
     note: 5,
   },
   {
-    nom: "Jean-Luc M.",
-    texte: "Accueil chaleureux. Quartier très sécurisé et bien situé à Thiès.",
-    note: 4.5,
+    nom: "Fallou",
+    paysCode: "fr",
+    titre: "Séjour au calme",
+    texte: "Je trouve l’établissement propre et surtout très calme si on veut se reposer. Niveau accueil madame Mbengue a été irréprochable.",
+    note: 5,
   },
   {
-    nom: "Awa D.",
-    texte: "Le meilleur endroit pour séjourner lors de mes voyages professionnels.",
+    nom: "Yemi",
+    paysCode: "gb",
+    titre: "Home Feeling",
+    texte: "It's spacious and clean. It has a separate kitchen and lounge for me to use. Ideal for staying indoors and doing your cooking.",
+    note: 4.5,
+  },
+
+  {
+    nom: "Modou",
+    paysCode: "sn",
+    titre: "Expérience agréable",
+    texte: "La résidence est calme propre et personnel est à l'écoute. Je vous le conseille à toute personne qui compte séjourner à Thies.",
     note: 5,
   },
 ];
@@ -37,10 +54,18 @@ function renderStars(note: number) {
 export default function Avis() {
   return (
       <section>
-        <h1 className="text-3xl font-bold mb-4 text-rose-700">Avis des clients</h1>
+        <h1 className="text-3xl font-bold mb-4 text-rose-700">Quelques-uns de nos avis clients</h1>
         <ul className="space-y-4">
           {avis.map((a, idx) => (
               <li key={idx} className="bg-white shadow rounded p-4 border-l-4 border-rose-500">
+                <div className="flex items-center mb-2">
+                  <img
+                      src={`https://flagcdn.com/w40/${a.paysCode}.png`}
+                      alt={a.paysCode}
+                      className="w-6 h-4 mr-2"
+                  />
+                </div>
+                <h2 className="font-semibold mb-1">{a.titre}</h2>
                 <div className="mb-2">{renderStars(a.note)}</div>
                 <p className="italic mb-2">“{a.texte}”</p>
                 <span className="font-semibold">– {a.nom}</span>

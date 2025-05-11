@@ -4,23 +4,27 @@ import Link from "next/link";
 const units = [
     {
         slug: "chambre-standard",
-        label: "Chambre standard",
-        description: "Chambre simple, confortable, idéale pour une ou deux personnes. Salle de bain privative, wifi, climatisation.",
-    },
-    {
-        slug: "studio-suite",
-        label: "Studio suite",
-        description: "Studios spacieux tout équipés, espace salon et vraie cuisine américaine.",
+        label: "Chambre standard – Confort et Simplicité",
+        description:
+            "Découvrez une chambre cosy idéale pour une ou deux personnes, avec salle de bain privée, Wi-Fi haut débit, mini-réfrigérateur et accès à une cuisine partagée. Parfaite pour un séjour pratique à 3 min du Stade Lat Dior et du Carrefour Market.",
     },
     {
         slug: "mini-studio",
-        label: "Mini studio",
-        description: "Petit logement fonctionnel parfait pour un court séjour solo.",
+        label: "Mini studio – Fonctionnalité et Confort en toute Simplicité",
+        description:
+            "Studio indépendant parfait pour une personne ou un couple, avec lit double, coin salon, cuisine équipée et salle de bain privée. Idéalement situé dans un quartier calme à 3 min du Stade Lat Dior et du Carrefour Market.",
+    },
+    {
+        slug: "studio-suite",
+        label: "Studio suite – Confort & Modernité au Rendez-vous",
+        description:
+            "Suite spacieuse avec salon lumineux, cuisine américaine équipée et chambre avec balcon privé. Salle de bain moderne, Wi-Fi, TV internationale, linge et ménage inclus. À 3 min du Stade Lat Dior et du Carrefour Market.",
     },
     {
         slug: "appartement-f3",
-        label: "Appartement F3",
-        description: "Appartement familial 2 chambres, salon, cuisine séparée.",
+        label: "Appartement F3 – Confort, Intimité et Élégance",
+        description:
+            "Appartement familial avec 2 chambres climatisées, salon, cuisine équipée et toilettes visiteurs. Idéal pour famille ou groupe à la recherche d’espace et de confort à 3 min du Stade Lat Dior et du Carrefour Market.",
     },
 ];
 
@@ -32,25 +36,7 @@ export default function Unites() {
                 {units.map((unit) => (
                     <div key={unit.slug} className="bg-white rounded-lg shadow p-6 flex flex-col justify-between">
                         <h2 className="text-xl font-semibold text-rose-600 mb-2">{unit.label}</h2>
-
                         <p className="mb-2 text-zinc-700">{unit.description}</p>
-
-                        {/* Message d'avertissement pour studio-suite et appartement-f3 */}
-                        {["studio-suite", "appartement-f3"].includes(unit.slug) && (
-                            <div className="flex items-start bg-yellow-100 border-l-4 border-yellow-600 p-3 rounded-md shadow-sm mb-4">
-                                <div className="text-xl mr-3">⚠️</div>
-                                <div>
-                                    <p className="font-semibold text-yellow-800">
-                                        Photos à venir
-                                    </p>
-                                    <p className="text-sm text-yellow-800">
-                                        Les photos pour cette unité seront bientôt disponibles.
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-
-
                         <Link
                             href={`/unites/${unit.slug}`}
                             className="bg-rose-600 text-white rounded px-4 py-2 font-semibold mt-auto hover:bg-rose-700 transition text-center"
@@ -60,7 +46,6 @@ export default function Unites() {
                     </div>
                 ))}
             </div>
-
         </section>
     );
 }
