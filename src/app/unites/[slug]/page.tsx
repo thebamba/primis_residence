@@ -25,7 +25,7 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
             "Profitez d’un lit double confortable, d’un coin salon avec TV, d’une cuisine ouverte équipée (réfrigérateur, plaques, micro-ondes, ustensiles) et d’une salle de bain privative. " +
             "Vous bénéficiez également de la climatisation, du Wi-Fi haut débit et de rangements astucieux, dans un espace indépendant et facile d’accès. " +
             "Situé à 3 min du Stade Lat Dior et du Carrefour Market, dans un quartier sécurisé, le mini studio est idéal pour les voyageurs, professionnels ou étudiants à la recherche d’un séjour pratique et agréable.",
-        images: ["/mini-studio/ministud1.jpg"],
+        images: ["/mini-studio/ministud1.JPG"],
     },
     "studio-suite": {
         label: "Studio suite – Confort & Modernité au Rendez-vous",
@@ -35,7 +35,7 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
             "Reposez-vous dans une chambre spacieuse avec balcon privé, parfaite pour vos moments de détente. " +
             "Vous bénéficiez d’une salle de bain privative, de la connexion Wi-Fi haut débit, d’une télévision avec chaînes internationales, du linge fourni et d’un service de ménage régulier. " +
             "Située dans un quartier calme à 3 min du Stade Lat Dior et du Carrefour Market, notre suite studio vous garantit un séjour agréable, moderne et sans souci.",
-        images: ["/studio-suite/suite1.jpg", "/studio-suite/suite2.jpg", "/studio-suite/suite3.jpg"],
+        images: ["/studio-suite/suite1.JPG", "/studio-suite/suite2.JPG", "/studio-suite/suite3.JPG"],
     },
     "appartement-f3": {
         label: "Appartement F3 – Confort, Intimité et Élégance",
@@ -45,7 +45,7 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
             "Préparez vos repas dans une cuisine entièrement équipée, et savourez vos pauses dans un coin café aménagé. " +
             "Vous bénéficiez de la connexion Wi-Fi haut débit, d’une télévision avec chaînes internationales, du linge fourni et d’un service de ménage régulier. " +
             "Situé à 3 min du Stade Lat Dior et du Carrefour Market, dans un quartier calme et sécurisé, cet appartement vous offre espace, confort et autonomie pour un séjour sans compromis.",
-        images: ["/f3/f31.jpeg", "/f3/f32.jpeg", "/f3/f33.jpg"],
+        images: ["/f3/f31.jpeg", "/f3/f32.jpeg", "/f3/f33.JPG"],
     },
 };
 
