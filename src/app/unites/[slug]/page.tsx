@@ -45,7 +45,7 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
             "Préparez vos repas dans une cuisine entièrement équipée, et savourez vos pauses dans un coin café aménagé. " +
             "Vous bénéficiez de la connexion Wi-Fi haut débit, d’une télévision avec chaînes internationales, du linge fourni et d’un service de ménage régulier. " +
             "Situé à 3 min du Stade Lat Dior et du Carrefour Market, dans un quartier calme et sécurisé, cet appartement vous offre espace, confort et autonomie pour un séjour sans compromis.",
-        images: ["/f3/f31.jpeg", "/f3/f32.jpeg", "/f3/f33.JPG"],
+        images: ["/f3/f31.jpeg", "/f3/f32.jpeg", "/f3/f33.jpg"],
     },
 };
 
