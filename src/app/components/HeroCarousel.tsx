@@ -35,7 +35,7 @@ export default function HeroCarousel() {
 
             <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-4">
                 <h1 className="text-3xl md:text-5xl font-bold text-white mb-2">
-                    Bienvenue à la Résidence PRIMIS
+                    Résidences PRIMIS - Bienvenue
                 </h1>
                 <p className="text-lg text-yellow-400 font-semibold mb-2">
                     À 30 minutes de l’aéroport international Blaise Diagne

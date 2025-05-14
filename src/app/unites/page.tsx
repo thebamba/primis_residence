@@ -1,5 +1,21 @@
 "use client";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+const UNITS = {
+    "chambre-standard": {
+        images: ["/standard-room/staroom1.JPG", "/standard-room/staroom2.JPG"],
+    },
+    "mini-studio": {
+        images: ["/mini-studio/ministud1.JPG"],
+    },
+    "studio-suite": {
+        images: ["/studio-suite/suite1.JPG", "/studio-suite/suite2.JPG"],
+    },
+    "appartement-f3": {
+        images: ["/f3/f31.jpeg", "/f3/f32.jpeg"],
+    },
+};
 
 const units = [
     {
@@ -37,6 +53,24 @@ export default function Unites() {
                     <div key={unit.slug} className="bg-white rounded-lg shadow p-6 flex flex-col justify-between">
                         <h2 className="text-xl font-semibold text-rose-600 mb-2">{unit.label}</h2>
                         <p className="mb-2 text-zinc-700">{unit.description}</p>
+
+                        {/* Miniatures cliquables avec flèche */}
+                        <div className="flex gap-2 items-center mb-4">
+                            {UNITS[unit.slug as keyof typeof UNITS].images.slice(0, 2).map((src, index) => (
+                                <Link href={`/unites/${unit.slug}`} key={index}>
+                                    <img
+                                        src={src}
+                                        alt={`Aperçu ${index + 1}`}
+                                        className="h-24 w-auto rounded shadow-sm cursor-pointer hover:scale-105 transition"
+                                    />
+                                </Link>
+                            ))}
+                            <Link href={`/unites/${unit.slug}`} className="flex items-center text-rose-600 hover:underline text-sm ml-2">
+                                <span>Voir plus</span>
+                                <ArrowRight className="ml-1 h-4 w-4" />
+                            </Link>
+                        </div>
+
                         <Link
                             href={`/unites/${unit.slug}`}
                             className="bg-rose-600 text-white rounded px-4 py-2 font-semibold mt-auto hover:bg-rose-700 transition text-center"

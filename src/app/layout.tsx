@@ -13,15 +13,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {/* Header/nav */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <nav className="max-w-4xl mx-auto flex items-center justify-between h-16 px-4 relative">
-          <Link href="/" className="text-lg font-bold tracking-wide text-rose-600">
-            Résidences PRIMIS
+          <Link href="/" className="flex items-center gap-2">
+            <img
+                src="/residences-primis-logo.jpg"
+                alt="Résidences PRIMIS Logo"
+                width={50}
+                height={50}
+                className="rounded"
+            />
+            <span className="text-lg font-bold tracking-wide text-rose-600">
+    Résidences PRIMIS
+  </span>
           </Link>
+
+
+
+
+
           {/* Desktop nav */}
           <div className="space-x-4 hidden md:flex">
             <Link href="/" className="hover:text-rose-600 transition">Accueil</Link>
             <Link href="/unites" className="hover:text-rose-600 transition">Nos studios et appartements</Link>
             <Link href="/a-propos" className="hover:text-rose-600 transition">À propos</Link>
-            <Link href="/contact" className="hover:text-rose-600 transition"> Nous contacter</Link>
+            {/*<Link href="/contact" className="hover:text-rose-600 transition"> Nous contacter</Link>*/}
             <Link href="/avis" className="hover:text-rose-600 transition">Avis</Link>
           </div>
           {/* Mobile burger */}
@@ -55,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </a>
         </div>
 
-        <p>© 2025 PRIM'IS SARL | Dakar, Sénégal</p>
+        <p>© 2025 Résidences PRIMIS | Thiès, Sénégal</p>
       </footer>
       </body>
       </html>

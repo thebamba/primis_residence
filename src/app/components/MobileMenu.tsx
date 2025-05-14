@@ -7,7 +7,7 @@ const menuItems = [
     { href: "/", label: "Accueil" },
     { href: "/unites", label: "Nos studios et appartements" },
     { href: "/a-propos", label: "À propos" },
-    { href: "/contact", label: "Nous contacter" },
+    // { href: "/contact", label: "Nous contacter" },
     { href: "/avis", label: "Avis" },
 ];
 
