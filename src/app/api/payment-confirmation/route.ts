@@ -4,7 +4,7 @@ export async function POST(req: Request) {
     const { user_name, email, unit_type, dates, total_price } = await req.json();
 
     const payloadToClient = {
-        sender: { name: "Résidences PRIMIS", email: "primisimmo@gmail.com" },
+        sender: { name: "Résidences PRIMIS", email: "contact@residencesprimis.com" },
         to: [{ email, name: user_name }],
         templateId: 2,
         params: {
@@ -16,10 +16,10 @@ export async function POST(req: Request) {
     };
 
     const payloadToYou = {
-        sender: { name: "Notification Résidences PRIMIS", email: "primisimmo@gmail.com" },
-        to: [{ email: "primisimmo@gmail.com", name: "Gestionnaire PRIMIS" }],
+        sender: { name: "Notification Résidences PRIMIS", email: "contact@residencesprimis.com" },
+        to: [{ email: "contact@residencesprimis.com", name: "Gestionnaire PRIMIS" }],
         subject: `Nouvelle réservation confirmée de ${user_name}`,
-        textContent: `Nom: ${user_name}\nEmail: ${email}\nUnité: ${unit_type}\nDates: ${dates}\nMontant payé: ${total_price} FCFA`
+        textContent: `Nom: ${user_name}\nEmail: ${email}\nUnité: ${unit_type}\nDates: ${dates}\nMontant payé: ${total_price}`
     };
 
 

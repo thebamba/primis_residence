@@ -3,14 +3,14 @@ export async function POST(req) {
     const { nom, email, message } = await req.json();
 
     const payloadToYou = {
-        sender: { name: "Nouveau message de contact", email: "primisimmo@gmail.com" },
-        to: [{ email: "primisimmo@gmail.com", name: "Vous" }],
+        sender: { name: "Nouveau message de contact", email: "contact@residencesprimis.com" },
+        to: [{ email: "contact@residencesprimis.com", name: "Vous" }],
         subject: `Nouveau message de ${nom}`,
         textContent: `Nom: ${nom}\nEmail: ${email}\nMessage: ${message}`
     };
 
     const payloadToClient = {
-        sender: { name: "Résidences PRIMIS", email: "primisimmo@gmail.com" },
+        sender: { name: "Résidences PRIMIS", email: "contact@residencesprimis.com" },
         to: [{ email: email, name: nom }],
         templateId: 1,
         params: { name: nom },
