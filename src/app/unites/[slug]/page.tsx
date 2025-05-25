@@ -1,5 +1,5 @@
 "use client";
-import { use, useState } from "react";
+import {use, useEffect, useState} from "react";
 import { useRouter } from "next/navigation";
 import { DateRange } from "react-date-range";
 import 'react-date-range/dist/styles.css';
@@ -7,6 +7,7 @@ import 'react-date-range/dist/theme/default.css';
 import Link from "next/link";
 
 type UnitSlug = "chambre-standard" | "mini-studio" | "studio-suite" | "appartement-f3";
+//const [blockedDates, setBlockedDates] = useState<Date[]>([]);
 
 const UNITS: Record<UnitSlug, { label: string; price: number; description: string; images: string[] }> = {
     "chambre-standard": {
@@ -54,6 +55,30 @@ const UNIT_SLUGS: UnitSlug[] = ["chambre-standard", "mini-studio", "studio-suite
 export default function UniteDetail({ params }: { params: Promise<{ slug: string }> }) {
     const router = useRouter();
     const { slug } = use(params);
+    const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+    useEffect(() => {
+        fetch(`/api/reservations?unit=${slug}`)
+            .then(res => res.json())
+            .then(data => {
+                const dates: Date[] = [];
+
+                data.forEach(({ from, to }: { from: string; to: string }) => {
+                    let current = new Date(from);
+                    const end = new Date(to);
+
+                    // Cloner la date pour éviter les effets de bord
+                    while (current <= end) {
+                        dates.push(new Date(current)); // Clone
+                        current = new Date(current);
+                        current.setDate(current.getDate() + 1);
+                    }
+                });
+
+                setBlockedDates(dates);
+            });
+    }, [slug]);
+
+
     const unit = UNITS[slug as UnitSlug] || { label: "Unité inconnue", price: 0, description: "", images: [] };
     const [range, setRange] = useState([{ startDate: new Date(), endDate: new Date(), key: "selection" }]);
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -95,7 +120,8 @@ export default function UniteDetail({ params }: { params: Promise<{ slug: string
             )}
 
             <div className="mb-2">
-                Prix : <span className="font-semibold">{unit.price.toLocaleString()} FCFA</span> / nuitée
+                Prix : <span className="font-semibold">{unit.price.toLocaleString('fr-FR')} FCFA</span>
+                / nuitée
             </div>
 
             <div className="bg-white rounded shadow p-4">
@@ -112,6 +138,7 @@ export default function UniteDetail({ params }: { params: Promise<{ slug: string
                         ranges={range}
                         rangeColors={["#f43f5e"]}
                         minDate={new Date()}
+                        disabledDates={blockedDates}
                     />
                 </div>
 
@@ -129,7 +156,7 @@ export default function UniteDetail({ params }: { params: Promise<{ slug: string
                     onClick={() => {
                         if (!isDateRangeValid) return;
                         router.push(
-                            `/reserver?type=${encodeURIComponent(unit.label)}&from=${startDate.toISOString()}` +
+                            `/reserver?type=${encodeURIComponent(slug)}&from=${startDate.toISOString()}` +
                             `&to=${endDate.toISOString()}&total=${total}&price=${unit.price}`
                         );
                     }}

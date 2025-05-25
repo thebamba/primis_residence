@@ -10,7 +10,7 @@ const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
 export default function ReserverContent() {
     const search = useSearchParams();
     const router = useRouter();
-    const unitType = search.get("type") || "";
+    const slug = search.get("type") || "";
     const from = search.get("from") || "";
     const to = search.get("to") || "";
     const total = search.get("total") || "";
@@ -29,11 +29,26 @@ export default function ReserverContent() {
         return userName.trim() !== "" && userEmail === emailConfirm && userEmail.trim() !== "";
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validateForm()) {
             setStatut({ type: "error", message: "Veuillez remplir correctement tous les champs obligatoires." });
             setHighlightError(true);
+            return;
+        }
+
+        const fromDate = from.split("T")[0];
+        const toDate = to.split("T")[0];
+
+        const resConflict = await fetch('/api/reservations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ unit_type: slug, from: fromDate, to: toDate })
+        });
+        const resultConflict = await resConflict.json();
+
+        if (!resConflict.ok) {
+            setStatut({ type: "error", message: resultConflict.message || "Les dates sont déjà prises." });
             return;
         }
 
@@ -59,6 +74,22 @@ export default function ReserverContent() {
             return;
         }
 
+        const fromDate = from.split("T")[0];
+        const toDate = to.split("T")[0];
+
+        const resConflict = await fetch('/api/reservations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ unit_type: slug, from: fromDate, to: toDate })
+        });
+
+        const resultConflict = await resConflict.json();
+
+        if (!resConflict.ok) {
+            setStatut({ type: "error", message: resultConflict.message || "Erreur : les dates sont déjà réservées." });
+            return;
+        }
+
         setStatut(null);
         setHighlightError(false);
 
@@ -69,14 +100,14 @@ export default function ReserverContent() {
         localStorage.setItem("reservationInfo", JSON.stringify({
             user_name,
             email,
-            unit_type: unitType,
+            unit_type: slug,
             dates: `${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}`,
             total_price: `${parseInt(total).toLocaleString()} FCFA`,
         }));
 
         const res = await fetch('/api/checkout_sessions', {
             method: 'POST',
-            body: JSON.stringify({ unitType: unitType, total: total }),
+            body: JSON.stringify({ unitType: slug, total: total }),
         });
         const { url } = await res.json();
         router.push(url);
@@ -89,7 +120,7 @@ export default function ReserverContent() {
             <div className="bg-zinc-50 p-3 rounded space-y-2">
                 <div>
                     <label className="font-medium">Type d'unité</label>
-                    <input value={unitType} readOnly className="w-full border rounded px-3 py-2 mt-1" />
+                    <input value={slug} readOnly className="w-full border rounded px-3 py-2 mt-1" />
                 </div>
                 <div>
                     <label className="font-medium">Dates</label>
@@ -106,7 +137,7 @@ export default function ReserverContent() {
             </div>
 
             <form ref={form} onSubmit={handleSubmit} className="space-y-4 bg-white rounded shadow p-4">
-                <input type="hidden" name="unit_type" value={unitType} />
+                <input type="hidden" name="unit_type" value={slug} />
                 <input type="hidden" name="dates" value={`${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}`} />
                 <input type="hidden" name="total_price" value={`${parseInt(total).toLocaleString()} FCFA`} />
 
