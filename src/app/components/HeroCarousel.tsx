@@ -27,8 +27,8 @@ export default function HeroCarousel() {
                     key={index}
                     src={img}
                     alt={`Slide ${index + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[4000ms] ease-in-out ${
-                        index === current ? "opacity-100 animate-zoom" : "opacity-0 scale-100"
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                        index === current ? "opacity-100" : "opacity-0"
                     }`}
                 />
             ))}
@@ -38,7 +38,7 @@ export default function HeroCarousel() {
                     Résidences PRIMIS - Bienvenue
                 </h1>
                 <p className="text-lg text-yellow-400 font-semibold mb-2">
-                    À 30 minutes de l’aéroport international Blaise Diagne
+                    À 30 minutes de l'aéroport international Blaise Diagne
                 </p>
 
                 <p className="text-white mb-6 max-w-xl">

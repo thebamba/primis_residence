@@ -61,19 +61,18 @@ export default function UniteDetailClient({ slug }: Props) {
     const total = unit.price * nights;
 
     useEffect(() => {
-        fetch(`/api/reservations?unit=${slug}`)
+        // Calculate date range for the next 12 months
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setMonth(endDate.getMonth() + 12);
+
+        // Fetch blocked dates (where all units are reserved)
+        fetch(`/api/reservations?unit=${slug}&checkDates=true&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`)
             .then(res => res.json())
             .then(data => {
-                const result: Date[] = [];
-                data.forEach(({ from, to }: { from: string; to: string }) => {
-                    const current = new Date(from);
-                    const end = new Date(to);
-                    while (current <= end) {
-                        result.push(new Date(current));
-                        current.setDate(current.getDate() + 1);
-                    }
-                });
-                setBlockedDates(result);
+                if (data.blockedDates) {
+                    setBlockedDates(data.blockedDates.map((date: string) => new Date(date)));
+                }
             });
     }, [slug]);
 

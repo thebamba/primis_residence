@@ -37,34 +37,43 @@ export default function ReserverContent() {
             return;
         }
 
-        const fromDate = from.split("T")[0];
-        const toDate = to.split("T")[0];
-
-        const resConflict = await fetch('/api/reservations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ unit_type: slug, from: fromDate, to: toDate })
-        });
-        const resultConflict = await resConflict.json();
-
-        if (!resConflict.ok) {
-            setStatut({ type: "error", message: resultConflict.message || "Les dates sont déjà prises." });
-            return;
-        }
-
         setStatut(null);
         setHighlightError(false);
 
-        emailjs
-            .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form.current!, EMAILJS_PUBLIC_KEY)
-            .then(() => {
-                setStatut({ type: "success", message: "Réservation confirmée ! Vous recevrez un email sous peu." });
-                form.current?.reset();
-                setEmailConfirm("");
-            })
-            .catch(() => {
-                setStatut({ type: "error", message: "Erreur lors de l'envoi. Veuillez réessayer." });
+        try {
+            const response = await fetch('/api/reservations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    unit: slug,
+                    from: from,
+                    to: to
+                }),
             });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                setStatut({ type: "error", message: result.message || "Une erreur s'est produite lors de la réservation." });
+                return;
+            }
+
+            // Send confirmation email
+            emailjs
+                .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form.current!, EMAILJS_PUBLIC_KEY)
+                .then(() => {
+                    setStatut({ type: "success", message: "Réservation confirmée ! Vous recevrez un email sous peu." });
+                    form.current?.reset();
+                    setEmailConfirm("");
+                })
+                .catch(() => {
+                    setStatut({ type: "error", message: "Erreur lors de l'envoi. Veuillez réessayer." });
+                });
+        } catch (error) {
+            setStatut({ type: "error", message: "Une erreur s'est produite lors de la réservation." });
+        }
     };
 
     const handleStripePayment = async () => {
@@ -158,7 +167,7 @@ export default function ReserverContent() {
                         <div>
                             <p className="font-semibold text-yellow-800">Adresse e-mail importante</p>
                             <p className="text-sm text-yellow-800">
-                                C’est à cette adresse que vous recevrez la confirmation et, si vous choisissez, le lien de paiement.
+                                C'est à cette adresse que vous recevrez la confirmation et, si vous choisissez, le lien de paiement.
                             </p>
                         </div>
                     </div>

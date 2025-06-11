@@ -14,8 +14,8 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
         label: "Chambre standard – Confort et Simplicité",
         price: 17000,
         description: "Découvrez une chambre cosy et fonctionnelle, idéale pour une ou deux personnes. " +
-            "Profitez d’une salle de bain privée, d’un bureau avec Wi-Fi haut débit, et d’un mini-réfrigérateur personnel. " +
-            "Accédez à une cuisine partagée, parfaite pour vos repas, et bénéficiez de la climatisation, d’une télévision avec chaînes internationales, du linge fourni et d’un service de ménage régulier. " +
+            "Profitez d'une salle de bain privée, d'un bureau avec Wi-Fi haut débit, et d'un mini-réfrigérateur personnel. " +
+            "Accédez à une cuisine partagée, parfaite pour vos repas, et bénéficiez de la climatisation, d'une télévision avec chaînes internationales, du linge fourni et d'un service de ménage régulier. " +
             "Située dans un quartier paisible à 3 min du stade Lat Dior et du Carrefour Market, la chambre standard vous garantit un séjour pratique et agréable.",
         images: ["/standard-room/staroom1.JPG", "/standard-room/staroom2.JPG", "/standard-room/staroom3.JPG", "/standard-room/staroom4.JPG"],
     },
@@ -23,18 +23,18 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
         label: "Mini studio – Fonctionnalité et Confort en toute Simplicité",
         price: 19000,
         description: "Découvrez notre studio entièrement équipé, parfait pour une personne ou un couple en séjour court ou prolongé. " +
-            "Profitez d’un lit double confortable, d’un coin salon avec TV, d’une cuisine ouverte équipée (réfrigérateur, plaques, micro-ondes, ustensiles) et d’une salle de bain privative. " +
-            "Vous bénéficiez également de la climatisation, du Wi-Fi haut débit et de rangements astucieux, dans un espace indépendant et facile d’accès. " +
-            "Situé à 3 min du Stade Lat Dior et du Carrefour Market, dans un quartier sécurisé, le mini studio est idéal pour les voyageurs, professionnels ou étudiants à la recherche d’un séjour pratique et agréable.",
+            "Profitez d'un lit double confortable, d'un coin salon avec TV, d'une cuisine ouverte équipée (réfrigérateur, plaques, micro-ondes, ustensiles) et d'une salle de bain privative. " +
+            "Vous bénéficiez également de la climatisation, du Wi-Fi haut débit et de rangements astucieux, dans un espace indépendant et facile d'accès. " +
+            "Situé à 3 min du Stade Lat Dior et du Carrefour Market, dans un quartier sécurisé, le mini studio est idéal pour les voyageurs, professionnels ou étudiants à la recherche d'un séjour pratique et agréable.",
         images: ["/mini-studio/ministud1.JPG"],
     },
     "studio-suite": {
         label: "Studio suite – Confort & Modernité au Rendez-vous",
         price: 23000,
         description: "Découvrez notre Studio Suite Élégante, une solution idéale pour les séjours confortables et modernes à Thiès. " +
-            "Profitez d’un vaste espace climatisé, d’un salon lumineux et d’une cuisine américaine entièrement équipée (réfrigérateur, micro-ondes, plaque, cafetière, ustensiles). " +
+            "Profitez d'un vaste espace climatisé, d'un salon lumineux et d'une cuisine américaine entièrement équipée (réfrigérateur, micro-ondes, plaque, cafetière, ustensiles). " +
             "Reposez-vous dans une chambre spacieuse avec balcon privé, parfaite pour vos moments de détente. " +
-            "Vous bénéficiez d’une salle de bain privative, de la connexion Wi-Fi haut débit, d’une télévision avec chaînes internationales, du linge fourni et d’un service de ménage régulier. " +
+            "Vous bénéficiez d'une salle de bain privative, de la connexion Wi-Fi haut débit, d'une télévision avec chaînes internationales, du linge fourni et d'un service de ménage régulier. " +
             "Située dans un quartier calme à 3 min du Stade Lat Dior et du Carrefour Market, notre suite studio vous garantit un séjour agréable, moderne et sans souci.",
         images: ["/studio-suite/suite1.JPG", "/studio-suite/suite2.JPG", "/studio-suite/suite3.JPG"],
     },
@@ -42,9 +42,9 @@ const UNITS: Record<UnitSlug, { label: string; price: number; description: strin
         label: "Appartement F3 – Confort, Intimité et Élégance",
         price: 35000,
         description: "Découvrez notre Appartement F3 Spacieux et Confortable, idéal pour les séjours en famille, entre amis ou professionnels. " +
-            "Profitez de deux chambres climatisées avec salles de bain privatives, d’un salon lumineux pour vos moments de détente, et d’une toilette visiteurs pratique. " +
+            "Profitez de deux chambres climatisées avec salles de bain privatives, d'un salon lumineux pour vos moments de détente, et d'une toilette visiteurs pratique. " +
             "Préparez vos repas dans une cuisine entièrement équipée, et savourez vos pauses dans un coin café aménagé. " +
-            "Vous bénéficiez de la connexion Wi-Fi haut débit, d’une télévision avec chaînes internationales, du linge fourni et d’un service de ménage régulier. " +
+            "Vous bénéficiez de la connexion Wi-Fi haut débit, d'une télévision avec chaînes internationales, du linge fourni et d'un service de ménage régulier. " +
             "Situé à 3 min du Stade Lat Dior et du Carrefour Market, dans un quartier calme et sécurisé, cet appartement vous offre espace, confort et autonomie pour un séjour sans compromis.",
         images: ["/f3/f31.jpeg", "/f3/f32.jpeg", "/f3/f33.jpg"],
     },
@@ -57,24 +57,22 @@ export default function UniteDetail({ params }: { params: Promise<{ slug: string
     const { slug } = use(params);
     const [blockedDates, setBlockedDates] = useState<Date[]>([]);
     useEffect(() => {
-        fetch(`/api/reservations?unit=${slug}`)
+        // Get a date range that includes the next 12 months
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setMonth(endDate.getMonth() + 12);
+
+        // Use the checkDates endpoint which handles capacity-aware blocking
+        fetch(`/api/reservations?unit=${slug}&checkDates=true&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`)
             .then(res => res.json())
             .then(data => {
-                const dates: Date[] = [];
-
-                data.forEach(({ from, to }: { from: string; to: string }) => {
-                    let current = new Date(from);
-                    const end = new Date(to);
-
-                    // Cloner la date pour éviter les effets de bord
-                    while (current <= end) {
-                        dates.push(new Date(current)); // Clone
-                        current = new Date(current);
-                        current.setDate(current.getDate() + 1);
-                    }
-                });
-
-                setBlockedDates(dates);
+                // The API now returns pre-calculated blocked dates based on capacity
+                const blockedDates = data.blockedDates.map((date: string) => new Date(date));
+                setBlockedDates(blockedDates);
+            })
+            .catch(error => {
+                console.error('Error fetching blocked dates:', error);
+                setBlockedDates([]);
             });
     }, [slug]);
 
